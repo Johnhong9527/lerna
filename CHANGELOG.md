@@ -3,6 +3,168 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/lerna/lerna/compare/v5.2.0...v5.3.0) (2022-07-27)
+
+
+### Bug Fixes
+
+* **run-lifecycle:** lifecycle events should run to completion in series ([#3262](https://github.com/lerna/lerna/issues/3262)) ([2f51588](https://github.com/lerna/lerna/commit/2f51588f3686ab9bb015a12294f3eca11cb41fad))
+* **version:** inherit stdio for lerna version lifecycle scripts ([#3264](https://github.com/lerna/lerna/issues/3264)) ([9083a23](https://github.com/lerna/lerna/commit/9083a239893d3edae5e16f057c515c741a10c312))
+
+
+### Features
+
+* **publish:** include all dependencies in package graph by default, allow no-sort ([#3263](https://github.com/lerna/lerna/issues/3263)) ([3b0c79c](https://github.com/lerna/lerna/commit/3b0c79cd9ea2abb9399b22cb05348b9b2c31fdce))
+
+
+
+
+
+# [5.2.0](https://github.com/lerna/lerna/compare/v5.1.8...v5.2.0) (2022-07-22)
+
+
+### Bug Fixes
+
+* **prompt:** update inquirer to v8.2.4 ([80c17d8](https://github.com/lerna/lerna/commit/80c17d8200851bfd89f8b7f8da897015774f1241))
+
+
+### Features
+
+* add json schema for lerna.json ([#3229](https://github.com/lerna/lerna/issues/3229)) ([5075eae](https://github.com/lerna/lerna/commit/5075eae0d0aa8db52f619b9a6d8fdc9934ba24f7))
+* **init:** default useNx and useWorkspaces to true for new lerna workspaces ([#3255](https://github.com/lerna/lerna/issues/3255)) ([a0e83e5](https://github.com/lerna/lerna/commit/a0e83e5220f6e3d30b96b60bbaf14c5392653c2e))
+* **publish:** disable legacy `verifyAccess` behavior by default ([#3249](https://github.com/lerna/lerna/issues/3249)) ([94174c1](https://github.com/lerna/lerna/commit/94174c1ff2ce20b9fef33a68bc62ba0d17207942))
+
+
+
+
+
+## [5.1.8](https://github.com/lerna/lerna/compare/v5.1.7...v5.1.8) (2022-07-07)
+
+
+### Bug Fixes
+
+* update git-url-parse to v12 ([#3231](https://github.com/lerna/lerna/issues/3231)) ([f954404](https://github.com/lerna/lerna/commit/f9544045b59714bacc1b5e0155682c7b1c4140d2))
+
+
+
+
+
+## [5.1.7](https://github.com/lerna/lerna/compare/v5.1.6...v5.1.7) (2022-07-06)
+
+
+### Bug Fixes
+
+* **run:** add double quotes around script target containing colon ([#3218](https://github.com/lerna/lerna/issues/3218)) ([ead461e](https://github.com/lerna/lerna/commit/ead461eba284d8d2efb0da3f18ce87fb5ae42bd2))
+
+
+
+
+
+## [5.1.6](https://github.com/lerna/lerna/compare/v5.1.5...v5.1.6) (2022-06-24)
+
+
+### Bug Fixes
+
+* lerna run parallel should maximize concurrency with useNx ([#3205](https://github.com/lerna/lerna/issues/3205)) ([f80d03c](https://github.com/lerna/lerna/commit/f80d03c17b06146b097f904ee066728d6580090d))
+
+
+
+
+
+## [5.1.5](https://github.com/lerna/lerna/compare/v5.1.4...v5.1.5) (2022-06-24)
+
+
+### Bug Fixes
+
+* **bootstrap:** preserve indentation style in package-lock.json when running bootstrap ([#2955](https://github.com/lerna/lerna/issues/2955)) ([04cfa52](https://github.com/lerna/lerna/commit/04cfa5237053fee1f016e8569612e44a615fc3b5))
+
+
+
+
+
+## [5.1.4](https://github.com/lerna/lerna/compare/v5.1.3...v5.1.4) (2022-06-15)
+
+
+### Bug Fixes
+
+* correctly detect if target dependencies are set ([5845f6b](https://github.com/lerna/lerna/commit/5845f6bf53fd562978fd0ee2265a9ec602b4c335))
+
+
+
+
+
+## [5.1.3](https://github.com/lerna/lerna/compare/v5.1.2...v5.1.3) (2022-06-15)
+
+
+### Bug Fixes
+
+* drastically reduce time taken to check for cycles ([#2874](https://github.com/lerna/lerna/issues/2874)) ([4b81a98](https://github.com/lerna/lerna/commit/4b81a98859e9a8667693bc7808fa76b2e21c07bc))
+* properly update lockfile v2 ([#3091](https://github.com/lerna/lerna/issues/3091)) ([1e07a88](https://github.com/lerna/lerna/commit/1e07a88d42335c950f09fe4f511da9d939cbb9bd))
+
+
+
+
+
+## [5.1.2](https://github.com/lerna/lerna/compare/v5.1.1...v5.1.2) (2022-06-13)
+
+
+### Bug Fixes
+
+* **conventional-commits:** remove pinned lodash.template ([#3172](https://github.com/lerna/lerna/issues/3172)) ([e519f43](https://github.com/lerna/lerna/commit/e519f43049253e66c1ab840c3c08435be1477d76))
+* update all transitive inclusions of ansi-regex ([#3166](https://github.com/lerna/lerna/issues/3166)) ([56eaa15](https://github.com/lerna/lerna/commit/56eaa153283be3b1e7d7793d3266fc51801fad8e))
+
+
+
+
+
+## [5.1.1](https://github.com/lerna/lerna/compare/v5.1.0...v5.1.1) (2022-06-09)
+
+
+### Bug Fixes
+
+* allow maintenance LTS node 14 engines starting at 14.15.0 ([#3161](https://github.com/lerna/lerna/issues/3161)) ([72305e4](https://github.com/lerna/lerna/commit/72305e4dbab607a2d87ae4efa6ee577c93a9dda9))
+
+
+
+
+
+# [5.1.0](https://github.com/lerna/lerna/compare/v5.0.0...v5.1.0) (2022-06-07)
+
+
+### Bug Fixes
+
+* **utils:** orphaned child process on Windows ([#3156](https://github.com/lerna/lerna/issues/3156)) ([7e69e9e](https://github.com/lerna/lerna/commit/7e69e9e308ec36d1c7b9682673e785aaa4ce056a))
+* handle the edge cases in the lerna-nx integration ([c6808fc](https://github.com/lerna/lerna/commit/c6808fc8f2dfe793bf72a64cf2d3909e0bdabba8))
+
+
+### Features
+
+* add experimental support to run tasks via Nx ([1c35828](https://github.com/lerna/lerna/commit/1c358286c8425d1720580859c4b42e15a3b15eac))
+
+
+
+# [5.0.0](https://github.com/lerna/lerna/compare/v4.0.0...v5.0.0) (2022-05-24)
+
+Lerna workspaces no longer have dependency deprecation warnings.
+
+### Bug Fixes
+
+* replace read-package-tree with @npmcli/arborist ([#3133](https://github.com/lerna/lerna/issues/3133)) ([f1c10a4](https://github.com/lerna/lerna/commit/f1c10a40fe667e5012a60e9b372a8e7996465de1))
+* resolve most dependency audit issues ([#3127](https://github.com/lerna/lerna/issues/3127)) ([2b3b191](https://github.com/lerna/lerna/commit/2b3b1910d377122f294b4a79a291596fbc81241c))
+
+### BREAKING CHANGES
+
+- Node v10.x and v12.x are no longer supported.
+
+  - Please upgrade to the latest LTS release of Node (we recommend either v14 or v16).
+
+- Internally npm lifecycle scripts are now invoked using `@npmcli/run-script` instead of `npm-lifecycle` in order to modernize the package and fix package vulnerabilities and deprecations.
+
+  - We are classing this as a breaking change because the APIs of `npm-lifecycle` and `@npmcli/run-script` are significantly different, despite `@npmcli/run-script` being the official successor to `npm-lifecycle`.
+
+    We have successfully made the integration test suite we inherited pass with this change, but there may potentially be aspects related to it which are not covered by the tests and are breaking. If you encounter any issues you believe are related to this change please open a new issue with a dedicated reproduction for us to look into!
+
+
 # [4.0.0](https://github.com/lerna/lerna/compare/v3.22.1...v4.0.0) (2021-02-10)
 
 
@@ -2972,7 +3134,7 @@ When running `lerna bootstrap --scope foo --include-filtered-dependencies` run p
 * [#557](https://github.com/lerna/lerna/pull/557) Fix broken hoisting tests. ([@doug-wade](https://github.com/doug-wade))
 * [#549](https://github.com/lerna/lerna/pull/549) Bump `signal-exit`.. ([@wtgtybhertgeghgtwtg](https://github.com/wtgtybhertgeghgtwtg))
 * [#548](https://github.com/lerna/lerna/pull/548) Bump `object-assigned-sorted`.. ([@wtgtybhertgeghgtwtg](https://github.com/wtgtybhertgeghgtwtg))
-* [#535](https://github.com/lerna/lerna/pull/535) Don't include unnecesary files in the npm package. ([@gpittarelli](https://github.com/gpittarelli))
+* [#535](https://github.com/lerna/lerna/pull/535) Don't include unnecessary files in the npm package. ([@gpittarelli](https://github.com/gpittarelli))
 * [#546](https://github.com/lerna/lerna/pull/546) Drop `object-assign`.. ([@wtgtybhertgeghgtwtg](https://github.com/wtgtybhertgeghgtwtg))
 * [#541](https://github.com/lerna/lerna/pull/541) Upgrade `inquirer` dependency. ([@wtgtybhertgeghgtwtg](https://github.com/wtgtybhertgeghgtwtg))
 

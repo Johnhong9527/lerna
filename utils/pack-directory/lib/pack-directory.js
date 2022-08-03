@@ -4,7 +4,7 @@ const path = require("path");
 const packlist = require("npm-packlist");
 const log = require("npmlog");
 const tar = require("tar");
-const tempWrite = require("temp-write");
+const tempWrite = require("@lerna/temp-write");
 const { getPacked } = require("@lerna/get-packed");
 const { Package } = require("@lerna/package");
 const { runLifecycle } = require("@lerna/run-lifecycle");
@@ -42,6 +42,7 @@ function packDirectory(_pkg, dir, options) {
   chain = chain.then(() => runLifecycle(pkg, "prepare", opts));
 
   if (opts.lernaCommand === "publish") {
+    opts.stdio = "inherit";
     chain = chain.then(() => pkg.refresh());
     chain = chain.then(() => runLifecycle(pkg, "prepublishOnly", opts));
     chain = chain.then(() => pkg.refresh());

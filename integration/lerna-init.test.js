@@ -4,8 +4,8 @@ const loadJsonFile = require("load-json-file");
 const path = require("path");
 const tempy = require("tempy");
 
-const { cliRunner } = require("@lerna-test/cli-runner");
-const initFixture = require("@lerna-test/init-fixture")(__dirname);
+const { cliRunner } = require("@lerna-test/helpers");
+const initFixture = require("@lerna-test/helpers").initFixtureFactory(__dirname);
 
 describe("lerna init", () => {
   const parsePackageJson = (cwd) => loadJsonFile(path.join(cwd, "package.json"));
@@ -19,10 +19,12 @@ describe("lerna init", () => {
     expect(stderr).toMatchInlineSnapshot(`
       lerna notice cli __TEST_VERSION__
       lerna info Initializing Git repository
+      lerna info Creating .gitignore
       lerna info Creating package.json
       lerna info Creating lerna.json
       lerna info Creating packages directory
       lerna success Initialized Lerna files
+      lerna info New to Lerna? Check out the docs: https://lerna.js.org/docs/getting-started
     `);
 
     const [packageJson, lernaJson] = await loadMetaData(cwd);
@@ -33,13 +35,16 @@ describe("lerna init", () => {
         },
         "name": "root",
         "private": true,
+        "workspaces": Array [
+          "packages/*",
+        ],
       }
     `);
     expect(lernaJson).toMatchInlineSnapshot(`
       Object {
-        "packages": Array [
-          "packages/*",
-        ],
+        "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+        "useNx": true,
+        "useWorkspaces": true,
         "version": "0.0.0",
       }
     `);
@@ -57,6 +62,7 @@ describe("lerna init", () => {
       lerna info Updating lerna.json
       lerna info Creating packages directory
       lerna success Initialized Lerna files
+      lerna info New to Lerna? Check out the docs: https://lerna.js.org/docs/getting-started
     `);
 
     const [packageJson, lernaJson] = await loadMetaData(cwd);
@@ -70,6 +76,7 @@ describe("lerna init", () => {
     `);
     expect(lernaJson).toMatchInlineSnapshot(`
       Object {
+        "$schema": "node_modules/lerna/schemas/lerna-schema.json",
         "command": Object {
           "bootstrap": Object {
             "hoist": true,
@@ -81,6 +88,8 @@ describe("lerna init", () => {
         "packages": Array [
           "packages/*",
         ],
+        "useNx": false,
+        "useWorkspaces": false,
         "version": "1.0.0",
       }
     `);

@@ -1,8 +1,13 @@
+// @ts-check
+
 "use strict";
 
 const log = require("npmlog");
-const runScript = require("npm-lifecycle");
+const runScript = require("@npmcli/run-script");
 const npmConf = require("@lerna/npm-conf");
+const PQueue = require("p-queue").default;
+
+const queue = new PQueue({ concurrency: 1 });
 
 module.exports.runLifecycle = runLifecycle;
 module.exports.createRunner = createRunner;
@@ -16,6 +21,7 @@ module.exports.createRunner = createRunner;
  * @property {string} [scriptShell]
  * @property {boolean} [scriptsPrependNodePath]
  * @property {boolean} [unsafePerm=true]
+ * @property {string} [stdio]
  */
 
 /**
@@ -33,6 +39,15 @@ function flattenOptions(obj) {
     unsafePerm: obj["unsafe-perm"],
     ...obj,
   };
+}
+
+/**
+ * Adapted from https://github.com/npm/run-script/blob/bb5156063ea3a7e167a6d5435847d9389146ec89/lib/run-script-pkg.js#L9
+ * Modified to add back "path" and make it behave more like "npm-lifecycle"
+ */
+function printCommandBanner(id, event, cmd, path) {
+  // eslint-disable-next-line no-console
+  return console.log(`\n> ${id ? `${id} ` : ""}${event} ${path}\n> ${cmd.trim().replace(/\n/g, "\n> ")}\n`);
 }
 
 /**
@@ -55,6 +70,7 @@ function runLifecycle(pkg, stage, options) {
     ...flattenOptions(options),
   };
   const dir = pkg.location;
+  const id = `${pkg.name}@${pkg.version}`;
   const config = {};
 
   if (opts.ignoreScripts) {
@@ -92,42 +108,64 @@ function runLifecycle(pkg, stage, options) {
     pkg = pkg.toJSON();
   }
 
-  // TODO: remove pkg._id when npm-lifecycle no longer relies on it
-  pkg._id = `${pkg.name}@${pkg.version}`; // eslint-disable-line
+  // _id is needed by @npmcli/run-script
+  // eslint-disable-next-line no-underscore-dangle
+  pkg._id = id;
 
   opts.log.silly("lifecycle", "%j starting in %j", stage, pkg.name);
 
-  return runScript(pkg, stage, dir, {
-    config,
-    dir,
-    failOk: false,
-    log: opts.log,
-    // bring along camelCased aliases
-    nodeOptions: opts.nodeOptions,
-    scriptShell: opts.scriptShell,
-    scriptsPrependNodePath: opts.scriptsPrependNodePath,
-    unsafePerm: opts.unsafePerm,
-  }).then(
-    () => {
-      opts.log.silly("lifecycle", "%j finished in %j", stage, pkg.name);
-    },
-    (err) => {
-      // propagate the exit code
-      const exitCode = err.errno || 1;
+  // info log here to reproduce previous behavior when this was powered by "npm-lifecycle"
+  opts.log.info("lifecycle", `${id}~${stage}: ${id}`);
 
-      // error logging has already occurred on stderr, but we need to stop the chain
-      log.error("lifecycle", "%j errored in %j, exiting %d", stage, pkg.name, exitCode);
+  /**
+   * In order to match the previous behavior of "npm-lifecycle", we have to disable the writing
+   * to the parent process and print the command banner ourselves, unless overridden by the options.
+   */
+  const stdio = opts.stdio || "pipe";
+  if (log.level !== "silent") {
+    printCommandBanner(id, stage, pkg.scripts[stage], dir);
+  }
 
-      // ensure clean logging, avoiding spurious log dump
-      err.name = "ValidationError";
+  return queue.add(async () =>
+    runScript({
+      event: stage,
+      path: dir,
+      pkg,
+      args: [],
+      stdio,
+      banner: false,
+      scriptShell: config.scriptShell,
+    }).then(
+      ({ stdout }) => {
+        if (stdout) {
+          /**
+           * This adjustment is based on trying to match the existing integration test outputs when migrating
+           * from "npm-lifecycle" to "@npmcli/run-script".
+           */
+          // eslint-disable-next-line no-console
+          console.log(stdout.toString().trimEnd());
+        }
 
-      // our yargs.fail() handler expects a numeric .exitCode, not .errno
-      err.exitCode = exitCode;
-      process.exitCode = exitCode;
+        opts.log.silly("lifecycle", "%j finished in %j", stage, pkg.name);
+      },
+      (err) => {
+        // propagate the exit code
+        const exitCode = err.code || 1;
 
-      // stop the chain
-      throw err;
-    }
+        // error logging has already occurred on stderr, but we need to stop the chain
+        log.error("lifecycle", "%j errored in %j, exiting %d", stage, pkg.name, exitCode);
+
+        // ensure clean logging, avoiding spurious log dump
+        err.name = "ValidationError";
+
+        // our yargs.fail() handler expects a numeric .exitCode, not .errno
+        err.exitCode = exitCode;
+        process.exitCode = exitCode;
+
+        // stop the chain
+        throw err;
+      }
+    )
   );
 }
 
